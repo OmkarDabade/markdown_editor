@@ -103,8 +103,7 @@ class MarkdownParseBody extends StatelessWidget {
         syntaxHighlighter: syntaxHighlighter,
         bulletBuilder: bulletBuilder ??
             (int number, BulletStyle style) {
-              double? fontSize =
-                  Theme.of(context).textTheme.bodyText2?.fontSize;
+              double? fontSize = Theme.of(context).textTheme.bodyMedium?.fontSize;
               return Text(
                 "◉",
                 textAlign: TextAlign.center,
@@ -117,21 +116,10 @@ class MarkdownParseBody extends StatelessWidget {
         styleSheetTheme: styleSheetTheme,
         extensionSet: md.ExtensionSet(
           md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-          [
-            md.EmojiSyntax(),
-            md.AutolinkExtensionSyntax(),
-            ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
-          ],
+          [md.EmojiSyntax(), md.AutolinkExtensionSyntax(), ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes],
         ),
-        blockSyntaxes: [
-          const md.FencedCodeBlockSyntax(),
-          if (blockSyntaxes != null) ...blockSyntaxes!
-        ],
-        inlineSyntaxes: [
-          ColoredHastagSyntax(),
-          ColoredMentionSyntax(),
-          if (inlineSyntaxes != null) ...inlineSyntaxes!
-        ],
+        blockSyntaxes: [const md.FencedCodeBlockSyntax(), if (blockSyntaxes != null) ...blockSyntaxes!],
+        inlineSyntaxes: [ColoredHastagSyntax(), ColoredMentionSyntax(), if (inlineSyntaxes != null) ...inlineSyntaxes!],
         builders: {
           "hastag": ColoredHastagElementBuilder(onTapHastag),
           "mention": ColoredMentionElementBuilder(onTapMention),
@@ -151,8 +139,7 @@ class MarkdownParseBody extends StatelessWidget {
                   ),
                 ),
               ),
-              blockquotePadding:
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+              blockquotePadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 25),
             ),
         onTapLink: onTapLink,
         imageBuilder: imageBuilder ??
@@ -165,11 +152,8 @@ class MarkdownParseBody extends StatelessWidget {
         checkboxBuilder: checkboxBuilder ??
             (bool value) {
               return FaIcon(
-                value
-                    ? FontAwesomeIcons.solidSquareCheck
-                    : FontAwesomeIcons.square,
-                size: checkboxIconSize ??
-                    Theme.of(context).textTheme.bodyText2?.fontSize,
+                value ? FontAwesomeIcons.solidSquareCheck : FontAwesomeIcons.square,
+                size: checkboxIconSize ?? Theme.of(context).textTheme.bodyMedium?.fontSize,
                 color: value ? Colors.blue[600] : Colors.grey,
               );
             },

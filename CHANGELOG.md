@@ -1,5 +1,10 @@
 # Changelogs
 
+## 0.2.14 - 3-January-2024
+
+* Upgrade markdown: ^7.1.1
+* Upgrade flutter_markdown: ^0.6.18+2
+
 ## 0.2.13 - 10-July-2022
 
 * Added shortcut Ctrl+B: Bold text

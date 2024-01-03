@@ -31,9 +31,9 @@ class ImageNetworkMarkdown extends StatelessWidget {
         height: 220,
         color: Colors.grey[200],
         alignment: Alignment.center,
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             FaIcon(FontAwesomeIcons.triangleExclamation),
             SizedBox(height: 20),
             Text(

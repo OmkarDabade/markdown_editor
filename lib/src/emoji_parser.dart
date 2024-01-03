@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 ///
 /// Constants defined for Emoji.
 ///
@@ -24,8 +22,7 @@ class EmojiUtil {
   /// Strip colons for emoji name.
   /// So, ':heart:' will become 'heart'.
   ///
-  static String stripColons(String name,
-      [void Function(String message)? onError]) {
+  static String stripColons(String name, [void Function(String message)? onError]) {
     Iterable<Match> matches = EmojiParser.regexName.allMatches(name);
     if (matches.isEmpty) {
       if (onError != null) {
@@ -57,8 +54,7 @@ class EmojiUtil {
   /// When processing emojis, we don't need to store the graphical byte
   /// which is 0xfe0f, or so-called 'Non-Spacing Mark'.
   ///
-  static String stripNSM(String name) => name.replaceAll(
-      RegExp(EmojiConst.charNonSpacingMark), EmojiConst.charEmpty);
+  static String stripNSM(String name) => name.replaceAll(RegExp(EmojiConst.charNonSpacingMark), EmojiConst.charEmpty);
 }
 
 ///
@@ -93,7 +89,7 @@ class Emoji {
   }
 
   @override
-  int get hashCode => hashValues(name.hashCode, code.hashCode);
+  int get hashCode => Object.hash(name.hashCode, code.hashCode);
 
   Emoji clone() {
     return Emoji(name, code);
@@ -119,8 +115,8 @@ class EmojiParser {
 //      r'(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe23\u20d0-\u20f0]|\ud83c[\udffb-\udfff])?(?:\u200d(?:[^\ud800-\udfff]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff])[\ufe0e\ufe0f]?(?:[\u0300-\u036f\ufe20-\ufe23\u20d0-\u20f0]|\ud83c[\udffb-\udfff])?)*');
 
   /// A tweak regexp to pass all Emoji Unicode 11.0
-  static final RegExp regexEmoji = RegExp(
-      r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])');
+  static final RegExp regexEmoji =
+      RegExp(r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])');
 
   static final RegExp regexName = RegExp(r":([\w-+]+):");
 
@@ -143,12 +139,10 @@ class EmojiParser {
     });
   }
 
-  Emoji get(String name) =>
-      _emojisByName[EmojiUtil.stripColons(name)] ?? Emoji.none;
+  Emoji get(String name) => _emojisByName[EmojiUtil.stripColons(name)] ?? Emoji.none;
 
   Emoji getName(String name) => get(name);
-  bool hasName(String name) =>
-      _emojisByName.containsKey(EmojiUtil.stripColons(name));
+  bool hasName(String name) => _emojisByName.containsKey(EmojiUtil.stripColons(name));
 
   ///
   /// Get info for an emoji.
@@ -224,8 +218,7 @@ class EmojiParser {
             result = result.replaceAll(m0, getEmoji(m0).full);
 
             /// Just a quick hack to clear graphical byte from emoji.
-            result = result.replaceAll(
-                EmojiConst.charNonSpacingMark, EmojiConst.charEmpty);
+            result = result.replaceAll(EmojiConst.charNonSpacingMark, EmojiConst.charEmpty);
           }
         }
       });
