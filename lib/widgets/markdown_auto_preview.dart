@@ -30,6 +30,9 @@ class MarkdownAutoPreview extends StatefulWidget {
     this.expands = false,
     this.decoration = const InputDecoration(isDense: true),
     this.hintText,
+    this.markdownPreviewBuilder,
+    this.textFieldBuilder,
+    this.shouldInitTextField = false,
   });
 
   /// Markdown syntax to reset the field to
@@ -46,6 +49,16 @@ class MarkdownAutoPreview extends StatefulWidget {
   ///
   /// if false, toolbar widget will not display
   final bool enableToolBar;
+
+  /// Override the default markdown preview
+  final Widget Function(String data)? markdownPreviewBuilder;
+
+  /// Override the default text field
+  final Widget Function(TextEditingController controller, FocusNode focusNode)?
+      textFieldBuilder;
+
+  /// If true by default, the TextField is shown
+  final bool shouldInitTextField;
 
   /// Enable Emoji options
   ///
@@ -215,6 +228,7 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
       },
     );
 
+    _focused = widget.shouldInitTextField;
     super.initState();
   }
 
@@ -271,12 +285,18 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
               },
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: MarkdownBody(
-                  key: const ValueKey<String>("zmarkdown-parse-body"),
-                  data: _internalController.text == ""
+                child: Builder(builder: (context) {
+                  final data = _internalController.text == ""
                       ? widget.hintText ?? "_Markdown text_"
-                      : _internalController.text,
-                ),
+                      : _internalController.text;
+                  if (widget.markdownPreviewBuilder != null) {
+                    return widget.markdownPreviewBuilder!(data);
+                  }
+                  return MarkdownBody(
+                    key: const ValueKey<String>("zmarkdown-parse-body"),
+                    data: data,
+                  );
+                }),
               ),
             ),
     );
@@ -321,6 +341,9 @@ class _MarkdownAutoPreviewState extends State<MarkdownAutoPreview> {
   }
 
   Widget _editor() {
+    if (widget.textFieldBuilder != null) {
+      return widget.textFieldBuilder!(_internalController, _textFieldFocusNode);
+    }
     return TextField(
       controller: _internalController,
       focusNode: _textFieldFocusNode,
